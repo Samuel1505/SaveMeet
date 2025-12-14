@@ -15,6 +15,7 @@ interface OnboardingScreenProps {
   totalScreens: number;
   onNext: () => void;
   onSkip: () => void;
+  isLastScreen?: boolean;
 }
 
 function OnboardingScreen({
@@ -26,6 +27,7 @@ function OnboardingScreen({
   totalScreens,
   onNext,
   onSkip,
+  isLastScreen = false,
 }: OnboardingScreenProps) {
   return (
     <View style={styles.container}>
@@ -59,10 +61,16 @@ function OnboardingScreen({
         ))}
       </View>
 
-      {/* Next Button */}
-      <TouchableOpacity style={styles.nextButton} onPress={onNext}>
-        <Text style={styles.nextButtonIcon}>→</Text>
-      </TouchableOpacity>
+      {/* Next/Get Started Button */}
+      {isLastScreen ? (
+        <TouchableOpacity style={styles.getStartedButton} onPress={onNext}>
+          <Text style={styles.getStartedText}>Get started</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.nextButton} onPress={onNext}>
+          <Text style={styles.nextButtonIcon}>→</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
