@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { Path, Rect, Circle, Text as SvgText } from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Svg, { Path, Rect, Circle, Ellipse, Text as SvgText } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
 
@@ -242,15 +242,19 @@ export default function OnboardingFlow() {
     },
   ];
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentScreen < screens.length - 1) {
       setCurrentScreen(currentScreen + 1);
     } else {
-      handleSkip(); // Go to home screen after last screen
+      // Mark onboarding as completed
+      await AsyncStorage.setItem('onboardingCompleted', 'true');
+      router.replace('/');
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
+    // Mark onboarding as completed
+    await AsyncStorage.setItem('onboardingCompleted', 'true');
     router.replace('/');
   };
 
