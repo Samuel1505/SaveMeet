@@ -276,6 +276,7 @@ export default function OnboardingFlow() {
       totalScreens={screens.length}
       onNext={handleNext}
       onSkip={handleSkip}
+      isLastScreen={currentScreen === screens.length - 1}
     />
   );
 }
@@ -364,6 +365,24 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 28,
     fontWeight: 'bold',
+  },
+  getStartedButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    alignSelf: 'center',
+    marginBottom: 40,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  getStartedText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
 
