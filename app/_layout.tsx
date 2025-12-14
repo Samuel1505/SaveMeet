@@ -23,14 +23,17 @@ export default function RootLayout() {
       const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted');
       setIsInitialized(true);
       
-      // Only redirect if we're not already on a screen
-      if (!onboardingCompleted && segments.length === 0) {
-        router.replace('/onboarding');
+      // Only redirect if onboarding hasn't been completed
+      if (!onboardingCompleted) {
+        // Small delay to ensure router is ready
+        setTimeout(() => {
+          router.replace('/onboarding');
+        }, 100);
       }
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [router]);
 
   if (!isSplashReady) {
     return <AppSplashScreen onFinish={() => setIsSplashReady(true)} />;
