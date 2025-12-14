@@ -1,12 +1,23 @@
-import { CloudIcon } from '@/components/cloud-icon';
-import { SaveMateLogo } from '@/components/savemate-logo';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as SplashScreen from 'expo-splash-screen';
+import { SaveMateLogo } from './savemate-logo';
+import { CloudIcon } from './cloud-icon';
 
-export default function HomeScreen() {
+const { width, height } = Dimensions.get('window');
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
+interface SplashScreenProps {
+  onFinish?: () => void;
+}
+
+export function AppSplashScreen({ onFinish }: SplashScreenProps) {
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const scaleAnim = React.useRef(new Animated.Value(0.8)).current;
+  const containerFadeAnim = React.useRef(new Animated.Value(1)).current;
   const cloudAnim1 = React.useRef(new Animated.Value(0)).current;
   const cloudAnim2 = React.useRef(new Animated.Value(0)).current;
   const cloudAnim3 = React.useRef(new Animated.Value(0)).current;
@@ -93,7 +104,24 @@ export default function HomeScreen() {
       cloudAnimation4,
     ]).start();
 
+    // Hide splash screen after animation with fade out
+    const timer = setTimeout(async () => {
+      // Fade out the splash screen
+      Animated.timing(containerFadeAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(async () => {
+        // Hide native splash screen only after fade out
+        await SplashScreen.hideAsync();
+        if (onFinish) {
+          onFinish();
+        }
+      });
+    }, 2500); // Show for 2.5 seconds before starting fade out
+
     return () => {
+      clearTimeout(timer);
       cloudAnimation1.stop();
       cloudAnimation2.stop();
       cloudAnimation3.stop();
@@ -122,7 +150,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <Animated.View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: containerFadeAnim }]}>
       <LinearGradient
         colors={['#E8F5E9', '#C8E6C9', '#A5D6A7']}
         style={StyleSheet.absoluteFill}
@@ -195,6 +223,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  gradient: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cloud1: {
     position: 'absolute',
     top: '10%',
@@ -218,6 +253,6 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
   },
 });
+
