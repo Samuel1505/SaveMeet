@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Stack, Redirect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-reanimated';
 
 import { AppSplashScreen } from '@/components/splash-screen';
@@ -10,10 +10,8 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const router = useRouter();
-  const segments = useSegments();
   const [isSplashReady, setIsSplashReady] = useState(false);
-  const [isOnboardingChecked, setIsOnboardingChecked] = useState(false);
+  const [shouldShowOnboarding, setShouldShowOnboarding] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Wait for splash screen to complete (3 seconds total: 2.5s display + 0.5s fade)
@@ -21,12 +19,7 @@ export default function RootLayout() {
       setIsSplashReady(true);
       // Check if onboarding is completed
       const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted');
-      setIsOnboardingChecked(true);
-      
-      if (!onboardingCompleted) {
-        // Redirect to onboarding if not completed
-        router.replace('/onboarding');
-      }
+      setShouldShowOnboarding(!onboardingCompleted);
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -34,6 +27,11 @@ export default function RootLayout() {
 
   if (!isSplashReady) {
     return <AppSplashScreen onFinish={() => setIsSplashReady(true)} />;
+  }
+
+  // Show onboarding if it hasn't been completed
+  if (shouldShowOnboarding === true) {
+    return <Redirect href="/onboarding" />;
   }
 
   return (
