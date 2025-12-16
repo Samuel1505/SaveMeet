@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Svg, { Path, Rect, Circle, Ellipse, Text as SvgText } from 'react-native-svg';
+import { useRouter, type Href } from 'expo-router';
+import React, { useState } from 'react';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Svg, { Circle, Ellipse, Path, Rect, Text as SvgText } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
 
@@ -257,15 +257,15 @@ export default function OnboardingFlow() {
       // Mark onboarding as completed
       await AsyncStorage.setItem('onboardingCompleted', 'true');
       // Navigate to login screen
-      router.replace('/login');
+      router.replace('/login' as Href);
     }
   };
 
   const handleSkip = async () => {
     // Mark onboarding as completed
     await AsyncStorage.setItem('onboardingCompleted', 'true');
-    // Navigate to login screen
-    router.replace('/login');
+      // Navigate to login screen
+      router.replace('/login' as Href);
   };
 
   return (

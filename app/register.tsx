@@ -1,22 +1,47 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useAuth } from '@/context/AuthContext';
 
 const { width } = Dimensions.get('window');
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const { signUp } = useAuth();
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    // TODO: Implement registration logic
-    console.log('Register:', { email, username, password, agreeToTerms });
+  const handleRegister = async () => {
+    if (!email || !fullName || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    if (!agreeToTerms) {
+      Alert.alert('Error', 'Please agree to the Terms and Conditions');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await signUp(email, password, fullName);
+      if (error) {
+        Alert.alert('Registration Failed', error);
+      } else {
+        Alert.alert('Success', 'Account created successfully! Please check your email to verify your account.');
+        router.replace('/login' as any);
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,11 +76,11 @@ export default function RegisterScreen() {
             
             <TextInput
               style={styles.input}
-              placeholder="Username*"
+              placeholder="Full Name*"
               placeholderTextColor="#9E9E9E"
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
+              value={fullName}
+              onChangeText={setFullName}
+              autoCapitalize="words"
             />
             
             <View style={styles.passwordContainer}>
@@ -99,11 +124,15 @@ export default function RegisterScreen() {
 
           {/* Register Button */}
           <TouchableOpacity
-            style={[styles.registerButton, !agreeToTerms && styles.registerButtonDisabled]}
+            style={[styles.registerButton, (!agreeToTerms || loading) && styles.registerButtonDisabled]}
             onPress={handleRegister}
-            disabled={!agreeToTerms}
+            disabled={!agreeToTerms || loading}
           >
-            <Text style={styles.registerButtonText}>Register</Text>
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text style={styles.registerButtonText}>Register</Text>
+            )}
           </TouchableOpacity>
 
           {/* Footer Link */}
