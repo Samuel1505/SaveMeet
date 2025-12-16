@@ -229,6 +229,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  loginButtonDisabled: {
+    opacity: 0.6,
+  },
   footer: {
     alignItems: 'center',
     gap: 12,
