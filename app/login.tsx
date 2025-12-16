@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { IconSymbol } from '@/components/ui/icon-symbol';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const { width } = Dimensions.get('window');
 
@@ -57,8 +57,8 @@ export default function LoginScreen() {
               style={styles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
             >
-              <IconSymbol
-                name={showPassword ? 'eye.fill' : 'eye.slash.fill'}
+              <MaterialIcons
+                name={showPassword ? 'visibility' : 'visibility-off'}
                 size={20}
                 color="#9E9E9E"
               />
@@ -73,7 +73,7 @@ export default function LoginScreen() {
         >
           <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
             {rememberMe && (
-              <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+              <MaterialIcons name="check" size={16} color="#FFFFFF" />
             )}
           </View>
           <Text style={styles.rememberMeText}>Remember me</Text>
