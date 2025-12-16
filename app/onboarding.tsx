@@ -256,14 +256,16 @@ export default function OnboardingFlow() {
     } else {
       // Mark onboarding as completed
       await AsyncStorage.setItem('onboardingCompleted', 'true');
-      router.replace('/');
+      // Navigate to login screen
+      router.replace('/login');
     }
   };
 
   const handleSkip = async () => {
     // Mark onboarding as completed
     await AsyncStorage.setItem('onboardingCompleted', 'true');
-    router.replace('/');
+    // Navigate to login screen
+    router.replace('/login');
   };
 
   return (
