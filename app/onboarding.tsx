@@ -264,8 +264,8 @@ export default function OnboardingFlow() {
   const handleSkip = async () => {
     // Mark onboarding as completed
     await AsyncStorage.setItem('onboardingCompleted', 'true');
-    // Navigate to login screen
-    router.replace('/login' as any);
+      // Navigate to login screen
+      router.replace('/login' as Href);
   };
 
   return (
