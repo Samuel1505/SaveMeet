@@ -34,8 +34,14 @@ export default function RegisterScreen() {
       if (error) {
         Alert.alert('Registration Failed', error);
       } else {
-        Alert.alert('Success', 'Account created successfully! Please check your email to verify your account.');
-        router.replace('/login' as any);
+        // If user is automatically signed in, go to home, otherwise go to login
+        if (data?.user) {
+          Alert.alert('Success', 'Account created successfully!');
+          router.replace('/' as any);
+        } else {
+          Alert.alert('Success', 'Account created successfully! Please check your email to verify your account.');
+          router.replace('/login' as any);
+        }
       }
     } catch (error: any) {
       Alert.alert('Error', error.message || 'An error occurred');
