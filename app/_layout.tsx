@@ -5,8 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
-import { AppSplashScreen } from '@/components/splash-screen';
-import { AuthProvider } from '@/context/AuthContext';
+import { AppSplashScreen } from '@/src/components/screens/auth/splashscreen';
+import { AuthProvider } from '@/src/context/AuthContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function RootLayout() {
