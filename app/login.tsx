@@ -29,7 +29,7 @@ export default function LoginScreen() {
         Alert.alert('Login Failed', error);
       } else {
         // Navigate to home screen on success
-        router.replace('/' as any);
+        router.replace('/index' as any);
       }
     } catch (error: any) {
       Alert.alert('Error', error.message || 'An error occurred');
