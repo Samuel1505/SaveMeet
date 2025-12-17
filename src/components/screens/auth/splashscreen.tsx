@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as SplashScreen from 'expo-splash-screen';
-import { SaveMateLogo } from './savemate-logo';
-import { CloudIcon } from './cloud-icon';
+import { SaveMateLogo } from '../../savemate-logo';
+import { CloudIcon } from '../../cloud-icon';
 
 const { width, height } = Dimensions.get('window');
 
